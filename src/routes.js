@@ -9,7 +9,7 @@ const create = require('./controllers/create');
 router.use(create);
 
 const cast = require('./controllers/cast');
-router.use(cast);
+router.use('/cast', cast);
 
 
 router.get('*', (req, res) => {
