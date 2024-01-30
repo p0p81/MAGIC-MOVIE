@@ -5,9 +5,11 @@ const router = require('express').Router(); // the upper two could be synthesize
 const home = require('./controllers/home'); 
 router.use(home);                           
 
-
 const create = require('./controllers/create');
 router.use(create);
+
+const cast = require('./controllers/cast');
+router.use(cast);
 
 
 router.get('*', (req, res) => {
