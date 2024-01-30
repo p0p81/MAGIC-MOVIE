@@ -16,9 +16,9 @@ router.get('/404', (req, res) => {
     res.render('404')
 })
 
-router.get('/search', (req, res) => {
+router.get('/search', async(req, res) => {
     const { title, genre, year } = req.query;
-    const moviesFound = movieService.search(title, genre, year);
+    const moviesFound = await movieService.search(title, genre, year).lean();
     //const movies = movieService.getAll();
 
     res.render('search', {movies: moviesFound})
