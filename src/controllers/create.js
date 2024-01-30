@@ -1,51 +1,50 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const movieService = require('../services/movieService');
-const castService = require('../services/castService');
-router.get('/create', (req, res) => {
-    res.render('create');
+const movieService = require("../services/movieService");
+const castService = require("../services/castService");
+router.get("/create", (req, res) => {
+  res.render("create");
 });
 
-router.post('/create', async(req, res) => {
-    const newMovie = req.body;
+router.post("/create", async (req, res) => {
+  const newMovie = req.body;
 
-    try{
-        await movieService.create(newMovie);
-     
-         res.redirect('/');
+  try {
+    await movieService.create(newMovie);
 
-    } catch (err) {
-        console.log(err.message);
-        res.redirect('/create');
-    }
+    res.redirect("/");
+  } catch (err) {
+    console.log(err.message);
+    res.redirect("/create");
+  }
 });
 
-router.get('/movies/:movieId', async(req, res) => {
-    const movieId = req.params.movieId;
-    const movie = await movieService.getOne(movieId).lean();
+router.get("/movies/:movieId", async (req, res) => {
+  const movieId = req.params.movieId;
+  const movie = await movieService.getOne(movieId).lean();
+  //const casts = await castService.getByIds(movie.casts).lean(); // after populate we dont need this one
 
-    //movie.rating = new Array(Number(movie.rating)).fill(true);
-    
-    movie.ratingStars = '&#x2605;'.repeat(movie.rating); //TO DO ...this is not good, use hanlebars helpers
+  //movie.rating = new Array(Number(movie.rating)).fill(true);
 
-    res.render('details', {movie});
+  movie.ratingStars = "&#x2605;".repeat(movie.rating); //TO DO ...this is not good, use hanlebars helpers
+
+  res.render("details", { movie });
 });
 
-router.get('/movies/:movieId/attach', async(req, res) => {
-
-    const movie = await movieService.getOne(req.params.movieId).lean();
-    const casts = await castService.getAll().lean();
-    //TODO remove already added casts
-    res.render('movie/attach', { movie, casts });
+router.get("/movies/:movieId/attach", async (req, res) => {
+  const movie = await movieService.getOne(req.params.movieId).lean();
+  const casts = await castService.getAll().lean();
+  //TODO remove already added casts
+  res.render("movie/attach", { movie, casts });
 });
 
-router.post('/movies/:movieId/attach', async(req, res) => {
-    const castId = req.body.cast;
-    const movie = req.params.movieId;
-    
-    await movieService.attach(movie, castId)
+router.post("/movies/:movieId/attach", async (req, res) => {
+  const castId = req.body.cast;
+  const movie = req.params.movieId;
 
-    res.redirect(`/movies/${movie}/attach`);
+  await movieService.attach(movie, castId);
+
+  res.redirect(`/movies/${movie}/attach`);
 });
 
 module.exports = router;
