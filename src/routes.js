@@ -11,6 +11,8 @@ router.use(create);
 const cast = require('./controllers/cast');
 router.use('/cast', cast);
 
+const auth = require('./controllers/auth')
+router.use(auth);
 
 router.get('*', (req, res) => {
     res.redirect('/404')
