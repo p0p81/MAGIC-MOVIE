@@ -9,6 +9,8 @@ router.get("/create", isAuth, (req, res) => {
   res.render("create");
 });
 
+// CREATE
+
 router.post("/create", isAuth, async (req, res) => {
   const newMovie = req.body;
   newMovie.owner = req.user._id;
@@ -23,6 +25,7 @@ router.post("/create", isAuth, async (req, res) => {
   }
 });
 
+// DETAILS
 
 router.get("/movies/:movieId", async (req, res) => {
   const movieId = req.params.movieId;
@@ -38,7 +41,7 @@ router.get("/movies/:movieId", async (req, res) => {
   res.render("movie/details", { movie, isOwner });
 });
 
-
+// ATTACH
 
 router.get("/movies/:movieId/attach", isAuth, async (req, res) => {
 
@@ -58,6 +61,7 @@ router.post("/movies/:movieId/attach", isAuth, async (req, res) => {
   res.redirect(`/movies/${movieId}/attach`);
 });
 
+//EDIT
 
 router.get("/movies/:movieId/edit", isAuth, async (req, res) => {
 
@@ -65,5 +69,20 @@ router.get("/movies/:movieId/edit", isAuth, async (req, res) => {
 
   res.render("movie/edit", { movie });
 });
+
+router.post("/movies/:movieId/edit", isAuth, async (req, res) => {
+  const editedMovie = req.body;
+  await movieService.edit(req.params.movieId, editedMovie);
+
+  res.redirect(`/movies/${req.params.movieId}`)
+});
+
+//DELETE
+
+router.get('/movies/:movieId/delete', isAuth, async(req, res) => {
+  await movieService.delete(req.params.movieId);
+  res.redirect('/')
+
+})
 
 module.exports = router;

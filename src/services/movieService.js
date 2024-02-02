@@ -24,6 +24,8 @@ exports.getOne = (movieId) => Movie.findById(movieId).populate("casts");
 
 exports.create = (movieData) => Movie.create(movieData);
 
+exports.edit = (movieId, movieData) => Movie.findByIdAndUpdate(movieId, movieData);
+
 exports.attach = async (movieId, castId) => {
   // return Movie.findByIdAndUpdate(movieId, { $push: { casts: castId } }); // this replace all below, and remove the async func
 
@@ -32,3 +34,5 @@ exports.attach = async (movieId, castId) => {
   movie.casts.push(castId);
   return movie.save();
 };
+
+exports.delete = (movieId) => Movie.findByIdAndDelete(movieId);
