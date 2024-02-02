@@ -27,14 +27,17 @@ router.post("/create", isAuth, async (req, res) => {
 router.get("/movies/:movieId", async (req, res) => {
   const movieId = req.params.movieId;
   const movie = await movieService.getOne(movieId).lean();
-  const isOwner = movie.owner == req.user._id;   // using == not ===, cause we are comparing object with string
+ 
+  const isOwner = movie.owner == req.user?._id;    //using the '?' means if there is user take his ID, otherwise return undefined
+// using == not ===, cause we are comparing object with string
+  
 
-  //movie.rating = new Array(Number(movie.rating)).fill(true);
-
-  movie.ratingStars = "&#x2605;".repeat(movie.rating); //TO DO ...this is not good, use hanlebars helpers
+//movie.rating = new Array(Number(movie.rating)).fill(true);
+  movie.ratingStars = "&#x2605;".repeat(movie.rating); //TO DO ...this is not good, use handlebars helpers
 
   res.render("movie/details", { movie, isOwner });
 });
+
 
 
 router.get("/movies/:movieId/attach", isAuth, async (req, res) => {
