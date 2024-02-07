@@ -14,7 +14,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     match: [/^[a-zA-Z0-9]+$/, 'Password must be alphanumeric'],
-    minLength: 6,
+    minLength: [6, 'Password too short'],
   },
 });
 
@@ -28,7 +28,7 @@ userSchema.pre("save", async function () {
 userSchema.virtual('rePassword')
 .set(function(value) {
   if (value !== this.password) {
-    throw new MongooseError(`Password mismatch!`)
+    throw new Error(`Password mismatch!`)
   }
 });
 
