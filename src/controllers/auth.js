@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
 
       res.cookie('auth', token)
       res.redirect('/')   
-  } catch {
+  } catch(err) {
     const message = getErrorMessage(err);
     res.status(400).render("auth/login", {error: message});
   }
