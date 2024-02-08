@@ -15,6 +15,11 @@ router.post("/create", isAuth, async (req, res) => {
   const newMovie = req.body;
   newMovie.owner = req.user._id;
 
+    // const newMovie = {
+    //   ...req.body,
+    //   owner: req.user._id,
+    // }
+
   try {
     await movieService.create(newMovie);
 
@@ -23,7 +28,7 @@ router.post("/create", isAuth, async (req, res) => {
   } catch (err) {
 
     const message = getErrorMessage(err);
-    res.render("/create", {error: message});
+    res.render("create", {...newMovie, error: message});
   }
 });
 
